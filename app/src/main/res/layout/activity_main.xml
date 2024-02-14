@@ -17,7 +17,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/etDateIdea"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Enter your date idea..."
@@ -31,7 +31,7 @@
         android:layout_marginStart="20dp"
         android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText" />
+        app:layout_constraintStart_toEndOf="@+id/etDateIdea" />
 
     <Button
         android:id="@+id/btnDeleteDateIdea"
