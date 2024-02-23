@@ -44,7 +44,7 @@ class DateIdeaAdapter(private val dateIdeas: MutableList<DateIdea>) : RecyclerVi
     override fun onBindViewHolder(holder: DateIdeaViewHolder, position: Int) {
         var currDateIdea = dateIdeas[position]
         holder.itemView.apply {
-            val tvDateIdea = findViewById<TextView>(R.id.rvDateIdeas)
+            val tvDateIdea = findViewById<TextView>(R.id.tvDateIdea)
             val cbComplete = findViewById<CheckBox>(R.id.cbComplete)
             tvDateIdea.text = currDateIdea.title
             cbComplete.isChecked = currDateIdea.isChecked

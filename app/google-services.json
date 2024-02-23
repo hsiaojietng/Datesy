@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1030985837813",
+    "project_id": "datesy-f5073",
+    "storage_bucket": "datesy-f5073.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030985837813:android:d799f54fb2977714f7a9bc",
+        "android_client_info": {
+          "package_name": "com.Datesy.datesy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZCQ0qRptDKqa-28_RYDDgZ5xpm0f_Xpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
