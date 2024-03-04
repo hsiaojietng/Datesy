@@ -23,20 +23,6 @@ class DateIdeaAdapter(private val dateIdeas: MutableList<DateIdea>) : RecyclerVi
         )
     }
 
-    fun addDateIdea(dateIdea: DateIdea) {
-        // Adds new date idea and notify adapter new item is inserted to refresh the recyclerview
-        dateIdeas.add(dateIdea)
-        notifyItemInserted(dateIdeas.size - 1)
-    }
-
-    fun deleteCompletedDateIdeas() {
-        // Remove all the ideas that has been checked
-        dateIdeas.removeAll { dateIdea ->
-            dateIdea.isChecked
-        }
-        notifyDataSetChanged()
-    }
-
     override fun getItemCount(): Int {
         return dateIdeas.size
     }
@@ -45,8 +31,14 @@ class DateIdeaAdapter(private val dateIdeas: MutableList<DateIdea>) : RecyclerVi
         var currDateIdea = dateIdeas[position]
         holder.itemView.apply {
             val tvDateIdea = findViewById<TextView>(R.id.tvDateIdea)
+            val tvDateLocation = findViewById<TextView>(R.id.tvDateLocation)
+            val tvDateDescription = findViewById<TextView>(R.id.tvDateDescription)
+            val tvDatePrice = findViewById<TextView>(R.id.tvDatePrice)
             val cbComplete = findViewById<CheckBox>(R.id.cbComplete)
             tvDateIdea.text = currDateIdea.title
+            tvDateLocation.text = currDateIdea.location
+            tvDateDescription.text = currDateIdea.description
+            tvDatePrice.text = currDateIdea.price.toString()
             cbComplete.isChecked = currDateIdea.isChecked
             toggleStrikeThrough(tvDateIdea, currDateIdea.isChecked)
             cbComplete.setOnCheckedChangeListener { _, isChecked ->

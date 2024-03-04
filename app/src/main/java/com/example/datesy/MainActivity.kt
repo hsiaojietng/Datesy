@@ -18,30 +18,31 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseApp.initializeApp(this)
         dateIdeaAdapter = DateIdeaAdapter(mutableListOf())
+        FirebaseHelper.init()
 
         // Define the layout
         val rvDateIdeas = findViewById<RecyclerView>(R.id.rvDateIdeas)
         rvDateIdeas.adapter = dateIdeaAdapter
         rvDateIdeas.layoutManager = LinearLayoutManager(this)
 
-        // Define the buttons
-        val btnAddDateIdea = findViewById<Button>(R.id.btnAddDateIdea)
-        val btnDeleteDateIdea = findViewById<Button>(R.id.btnDeleteDateIdea)
+        // Obtain data from Firebase
+        FirebaseHelper.readData().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val dataSnapshot = task.result
+                val dateIdeasList = mutableListOf<DateIdea>()
 
-        // Adding new date idea
-        btnAddDateIdea.setOnClickListener {
-            val dateIdeaTextView = findViewById<TextView>(R.id.etDateIdea)
-            val dateIdeaTitle = dateIdeaTextView.text.toString()
-            if (dateIdeaTitle.isNotEmpty()) {
-                val dateIdea = DateIdea(dateIdeaTitle, false)
-                dateIdeaAdapter.addDateIdea(dateIdea)
-                dateIdeaTextView.text = ""
+                for (snapshot in dataSnapshot.children) {
+                    val dateIdea = snapshot.getValue(DateIdea::class.java)
+                    dateIdea?.let { dateIdeasList.add(it) } // If dateIdea is not null, add it to the dateIdeasList
+                }
+
+                // Init Recyclerview and the adapter
+                val recyclerView = findViewById<RecyclerView>(R.id.rvDateIdeas)
+                val adapter = DateIdeaAdapter(dateIdeasList)
+
+                // Set adapter to Recyclerview
+                recyclerView.adapter = adapter
             }
-        }
-
-        // Deleting new date idea
-        btnDeleteDateIdea.setOnClickListener {
-            dateIdeaAdapter.deleteCompletedDateIdeas()
         }
     }
 }
