@@ -4,45 +4,45 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.datesy.databinding.ActivityMainBinding
 import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity() {
+    // Acts as the main page that changes the view based on which user navigates to
 
-    // A promise to init this var
-    private lateinit var dateIdeaAdapter: DateIdeaAdapter
+    private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        FirebaseApp.initializeApp(this)
-        dateIdeaAdapter = DateIdeaAdapter(mutableListOf())
-        FirebaseHelper.init()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        // Starting view contains the Home fragment
+        replaceFragment(Home())
 
-        // Define the layout
-        val rvDateIdeas = findViewById<RecyclerView>(R.id.rvDateIdeas)
-        rvDateIdeas.adapter = dateIdeaAdapter
-        rvDateIdeas.layoutManager = LinearLayoutManager(this)
-
-        // Obtain data from Firebase
-        FirebaseHelper.readData().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val dataSnapshot = task.result
-                val dateIdeasList = mutableListOf<DateIdea>()
-
-                for (snapshot in dataSnapshot.children) {
-                    val dateIdea = snapshot.getValue(DateIdea::class.java)
-                    dateIdea?.let { dateIdeasList.add(it) } // If dateIdea is not null, add it to the dateIdeasList
-                }
-
-                // Init Recyclerview and the adapter
-                val recyclerView = findViewById<RecyclerView>(R.id.rvDateIdeas)
-                val adapter = DateIdeaAdapter(dateIdeasList)
-
-                // Set adapter to Recyclerview
-                recyclerView.adapter = adapter
+        binding.navBar.setOnItemSelectedListener {
+            when(it.itemId) {
+                // When the home icon is clicked on, then navigate to Home fragment
+                R.id.home -> replaceFragment(Home())
+                R.id.profile -> replaceFragment(Profile())
             }
+
+            true
         }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        /*
+            1) Using a Fragment manager
+            2) Perform a Fragment transaction
+            3) Replacing Fragment with current FrameLayout
+         */
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frameLayout, fragment)
+        fragmentTransaction.commit()
     }
 }
